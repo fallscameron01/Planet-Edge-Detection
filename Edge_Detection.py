@@ -5,7 +5,7 @@ from scipy.ndimage import generic_filter, convolve
 import cv2
 
 # Initial Image
-image = mpimg.imread('Mars.jpg')
+image = mpimg.imread('images/Mars.jpg')
 plt.imshow(image)
 plt.show()
 
@@ -21,7 +21,6 @@ _, label, center = cv2.kmeans(vec, K, bestLabels=None, criteria=termination_crit
 meansImg = np.uint8(center)[label.flatten()]
 meansImg = meansImg.reshape((image.shape))
 
-print(meansImg.shape)
 plt.imshow(meansImg)
 plt.show()
 
@@ -33,7 +32,9 @@ edge_kernel = [
 
 edge_kernel = np.array(edge_kernel)
 
-grayscaleImg = np.mean(meansImg)
+grayscaleImg = np.mean(meansImg, axis=2)
+plt.imshow(grayscaleImg, cmap='gray')
+plt.show()
 
 edges = convolve(grayscaleImg, edge_kernel)
 binarized_edges = np.where(edges > .25, 1, 0)

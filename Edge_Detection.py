@@ -8,7 +8,6 @@ import cv2
 
 # Initial Image
 image = cv2.imread('images/Mars.jpg')
-print(image)
 
 # K Means Clustering
 vec = image.reshape((-1, 3))

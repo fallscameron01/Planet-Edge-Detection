@@ -1,15 +1,29 @@
+"""
+This file contains PlanetDetection, which will detect the edges of a planet in an image.
+"""
+
 import numpy as np
 from scipy.ndimage import generic_filter, convolve
 import cv2
 
 
 def PlanetDetection(imagepath):
-    # Initial Image
-    image = cv2.imread('images/Mars.jpg')
+    """
+    PlanetDetection will detect the edges of a planet in an image.
+
+    Parameters
+    ----------
+    imagepath - string - the path of the image
+
+    Return
+    ------
+    ndarray - edges image
+    """
+    # Read Image
+    image = cv2.imread(imagepath)
 
     # K Means Clustering
-    vec = image.reshape((-1, 3))
-    vec = np.float32(vec)
+    vec = np.float32(image.reshape((-1, 3)))
 
     termination_criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 10, 1.0)
     K = 2
@@ -27,13 +41,14 @@ def PlanetDetection(imagepath):
     grayscaleImg = np.mean(meansImg, axis=2)
 
     edges = convolve(grayscaleImg, edge_kernel)
-    binarized_edges = np.where(edges > .25, 1, 0)
-
-    cv2.imshow("edges", edges)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    
+    return edges
 
 
 if __name__ == "__main__":
     imgpath = 'images/Mars.jpg'
-    PlanetDetection(imgpath)
+    edges = PlanetDetection(imgpath)
+    
+    cv2.imshow("Edges", edges)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
